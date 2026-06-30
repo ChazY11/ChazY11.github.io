@@ -17,7 +17,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 主卡片 */
 .card {
   background: #fff;
   max-width: 400px;
@@ -25,7 +24,6 @@ body {
   padding: 16px 12px 12px 12px;
 }
 
-/* 标题行 */
 .head-row {
   text-align: center;
   padding-bottom: 4px;
@@ -68,7 +66,6 @@ body {
   clear: both;
 }
 
-/* 信息表格 */
 .info-table {
   width: 100%;
   border-collapse: collapse;
@@ -100,7 +97,6 @@ body {
   background: #fff5f5;
 }
 
-/* 菜品表格 */
 .dish-table {
   width: 100%;
   border-collapse: collapse;
@@ -145,7 +141,7 @@ body {
 }
 
 .dish-table td input:focus { outline: none; background: #fff5f5; }
-.dish-table td:nth-child(2) input { text-align: left; padding-left: 6px; }
+.dish-table td:nth-child(1) input { text-align: left; padding-left: 6px; }
 
 .dish-table td select {
   width: 100%;
@@ -164,7 +160,6 @@ body {
 
 .dish-table td select:focus { outline: none; background: #fff5f5; }
 
-/* 添加按钮 */
 .add-btn {
   width: 100%;
   max-width: 400px;
@@ -183,7 +178,6 @@ body {
 
 .add-btn:active { background: #fff0f0; }
 
-/* 底部行 */
 .foot-row {
   max-width: 400px;
   margin: 6px auto 0;
@@ -223,7 +217,6 @@ body {
   margin-left: 12px;
 }
 
-/* 操作按钮 */
 .actions {
   max-width: 400px;
   margin: 10px auto 0;
@@ -267,14 +260,12 @@ body {
 <body>
 
 <div class="card" id="card">
-  <!-- 标题 -->
   <div class="head-row">
     <div class="head-left">远味</div>
     <div class="head-right" id="noTop">NO:00001</div>
     <div class="head-center">食品记录卡</div>
   </div>
 
-  <!-- 信息 -->
   <table class="info-table">
     <tr>
       <td>台号：<input type="text" id="t1" style="width:60px;" autocomplete="off"></td>
@@ -290,13 +281,12 @@ body {
     </tr>
   </table>
 
-  <!-- 菜品表格 -->
   <table class="dish-table" id="dishTable">
     <thead>
       <tr>
-        <th>大小<br>大/中/小</th>
         <th>名称</th>
         <th>数量</th>
+        <th>大小<br>大/中/小</th>
         <th>烹饪方法</th>
       </tr>
     </thead>
@@ -306,13 +296,11 @@ body {
 
 <button class="add-btn" onclick="addRow()" id="addBtn">+ 添加菜品行</button>
 
-<!-- 底部 -->
 <div class="foot-row" id="footRow">
   <div class="foot-left">顾客意见：<input type="text" id="note" style="width:100%;" autocomplete="off"></div>
   <div class="foot-right" id="noBottom">NO:00001</div>
 </div>
 
-<!-- 按钮 -->
 <div class="actions" id="actions">
   <button class="btn btn-new" onclick="newOrder()">📝 新订单</button>
   <button class="btn btn-shot" onclick="takeShot()">📸 截屏发后厨</button>
@@ -341,7 +329,7 @@ function addRow() {
   var tr = document.createElement('tr');
   var now = new Date();
   var ts = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-  tr.innerHTML = '<td><select><option value=""></option><option value="大">大</option><option value="中">中</option><option value="小">小</option></select></td><td><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
+  tr.innerHTML = '<td><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><select><option value=""></option><option value="大">大</option><option value="中">中</option><option value="小">小</option></select></td><td><input type="text" placeholder="" autocomplete="off"></td>';
   tbody.appendChild(tr);
 }
 

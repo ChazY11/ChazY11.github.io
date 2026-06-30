@@ -147,6 +147,23 @@ body {
 .dish-table td input:focus { outline: none; background: #fff5f5; }
 .dish-table td:nth-child(2) input { text-align: left; padding-left: 6px; }
 
+.dish-table td select {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  padding: 2px 4px;
+  text-align: center;
+  font-family: inherit;
+  -webkit-appearance: menulist;
+  appearance: menulist;
+  text-align-last: center;
+}
+
+.dish-table td select:focus { outline: none; background: #fff5f5; }
+
 /* 添加按钮 */
 .add-btn {
   width: 100%;
@@ -269,7 +286,7 @@ body {
       <td>顾客：<input type="text" id="t5" style="width:60px;" autocomplete="off"></td>
       <td>茶位：<input type="number" id="t6" style="width:50px;" min="1" autocomplete="off"></td>
       <td>时间：<input type="text" id="t7" style="width:80px;" autocomplete="off"></td>
-      <td>连单人：<input type="text" id="t8" style="width:60px;" autocomplete="off"></td>
+      <td>落单时间：<input type="text" id="t8" style="width:60px;" autocomplete="off"></td>
     </tr>
   </table>
 
@@ -277,10 +294,10 @@ body {
   <table class="dish-table" id="dishTable">
     <thead>
       <tr>
-        <th>落单<br>时间</th>
+        <th>大小<br>大/中/小</th>
         <th>名称</th>
         <th>数量</th>
-        <th>经手人</th>
+        <th>烹饪方法</th>
       </tr>
     </thead>
     <tbody id="dishBody"></tbody>
@@ -324,7 +341,7 @@ function addRow() {
   var tr = document.createElement('tr');
   var now = new Date();
   var ts = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-  tr.innerHTML = '<td><input type="text" value="' + ts + '" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
+  tr.innerHTML = '<td><select><option value=""></option><option value="大">大</option><option value="中">中</option><option value="小">小</option></select></td><td><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
   tbody.appendChild(tr);
 }
 

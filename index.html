@@ -4,97 +4,276 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>远味 食品记录卡</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: "STKaiti", "KaiTi", "楷体", "SimSun", "宋体", serif;
+            font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "宋体", serif;
             background: #e8e0d0;
-            padding: 12px;
+            padding: 10px;
             font-size: 15px;
             color: #a03030;
             -webkit-tap-highlight-color: transparent;
             min-height: 100vh;
         }
+
         .paper {
             background: #fff;
-            max-width: 480px;
+            width: 100%;
+            max-width: 420px;
             margin: 0 auto;
-            padding: 20px 16px 16px 16px;
+            padding: 14px 12px 12px 12px;
             position: relative;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
-        .header { position: relative; margin-bottom: 14px; padding-bottom: 4px; }
-        .header-top { display: flex; align-items: flex-end; justify-content: center; position: relative; }
+
+        .header {
+            position: relative;
+            margin-bottom: 10px;
+            padding-bottom: 2px;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
         .brand {
-            font-family: "STXingkai", "Xingkai SC", "行楷", cursive;
-            font-size: 32px; color: #a03030;
-            position: absolute; left: 8px; bottom: 2px; letter-spacing: 2px;
+            font-size: 26px;
+            color: #a03030;
+            font-weight: 700;
+            letter-spacing: 2px;
+            flex-shrink: 0;
         }
-        .title { font-size: 22px; color: #a03030; letter-spacing: 6px; font-weight: 700; text-align: center; padding-left: 40px; }
-        .order-no-top { position: absolute; right: 8px; bottom: 2px; font-size: 16px; color: #a03030; font-weight: 700; letter-spacing: 1px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px 6px; margin-bottom: 14px; }
-        .info-item { display: flex; align-items: baseline; font-size: 14px; color: #a03030; }
-        .info-item label { white-space: nowrap; font-weight: 600; }
+
+        .title {
+            font-size: 20px;
+            color: #a03030;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-align: center;
+            flex: 1;
+            padding: 0 8px;
+        }
+
+        .order-no-top {
+            font-size: 15px;
+            color: #a03030;
+            font-weight: 700;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 10px;
+            margin-bottom: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: baseline;
+            font-size: 14px;
+            color: #a03030;
+        }
+
+        .info-item label {
+            white-space: nowrap;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
         .info-item input {
-            flex: 1; border: none; border-bottom: 1px solid #a03030; background: transparent;
-            font-size: 14px; color: #333; padding: 1px 4px; font-family: inherit; min-width: 30px; text-align: center;
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #a03030;
+            background: transparent;
+            font-size: 14px;
+            color: #333;
+            padding: 1px 4px;
+            font-family: inherit;
+            min-width: 40px;
+            text-align: center;
         }
-        .info-item input:focus { outline: none; border-bottom: 1.5px solid #a03030; background: #fff8f8; }
-        .table-wrap { border: 1.5px solid #a03030; margin-bottom: 12px; }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+
+        .info-item input:focus {
+            outline: none;
+            border-bottom: 1.5px solid #a03030;
+            background: #fff8f8;
+        }
+
+        .table-wrap {
+            border: 1.5px solid #a03030;
+            margin-bottom: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            min-width: 320px;
+        }
+
         th {
-            border: 1px solid #a03030; color: #a03030; font-size: 15px; font-weight: 700;
-            padding: 6px 2px; text-align: center; height: 44px; vertical-align: middle;
+            border: 1px solid #a03030;
+            color: #a03030;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 4px 2px;
+            text-align: center;
+            height: 40px;
+            vertical-align: middle;
         }
-        th.time-col { width: 16%; writing-mode: vertical-rl; text-orientation: upright; letter-spacing: 3px; padding: 8px 2px; line-height: 1.2; }
-        th.name-col { width: 46%; }
-        th.qty-col { width: 16%; }
-        th.person-col { width: 22%; }
-        td { border: 1px solid #a03030; padding: 0; height: 42px; vertical-align: middle; }
+
+        th.time-col {
+            width: 14%;
+            line-height: 1.3;
+            padding: 4px 2px;
+        }
+
+        .v-text span {
+            display: block;
+            font-size: 13px;
+        }
+
+        th.name-col { width: 48%; }
+        th.qty-col { width: 14%; }
+        th.person-col { width: 24%; }
+
+        td {
+            border: 1px solid #a03030;
+            padding: 0;
+            height: 38px;
+            vertical-align: middle;
+        }
+
         td input {
-            width: 100%; height: 100%; border: none; background: transparent;
-            font-size: 15px; color: #333; font-family: inherit; padding: 4px 6px; text-align: center;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            color: #333;
+            font-family: inherit;
+            padding: 3px 4px;
+            text-align: center;
         }
+
         td input:focus { outline: none; background: #fff8f8; }
-        td.name-cell input { text-align: left; }
-        .footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 6px; }
-        .customer-note { display: flex; align-items: baseline; font-size: 15px; color: #a03030; font-weight: 600; flex: 1; }
+        td.name-cell input { text-align: left; padding-left: 6px; }
+
+        .btn-add {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 8px;
+            background: #fff;
+            border: 1.5px dashed #a03030;
+            border-radius: 4px;
+            color: #a03030;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            -webkit-appearance: none;
+        }
+
+        .btn-add:active { background: #fff0f0; }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 4px;
+        }
+
+        .customer-note {
+            display: flex;
+            align-items: baseline;
+            font-size: 14px;
+            color: #a03030;
+            font-weight: 600;
+            flex: 1;
+        }
+
         .customer-note input {
-            flex: 1; border: none; border-bottom: 1px solid #a03030; background: transparent;
-            font-size: 14px; color: #333; padding: 1px 4px; font-family: inherit; margin-left: 4px; margin-right: 16px;
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #a03030;
+            background: transparent;
+            font-size: 14px;
+            color: #333;
+            padding: 1px 4px;
+            font-family: inherit;
+            margin-left: 4px;
+            margin-right: 12px;
+            min-width: 60px;
         }
+
         .customer-note input:focus { outline: none; background: #fff8f8; }
-        .order-no-bottom { font-size: 17px; color: #a03030; font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
-        .actions { max-width: 480px; margin: 12px auto 0; display: flex; gap: 10px; }
-        .btn {
-            flex: 1; padding: 12px; border: 1.5px solid #a03030; border-radius: 4px;
-            font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; font-family: inherit; -webkit-appearance: none;
+
+        .order-no-bottom {
+            font-size: 15px;
+            color: #a03030;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
+
+        .actions {
+            max-width: 420px;
+            margin: 10px auto 0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: 1.5px solid #a03030;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            font-family: inherit;
+            -webkit-appearance: none;
+        }
+
         .btn-new { background: #fff; color: #a03030; }
         .btn-new:active { background: #fff0f0; }
         .btn-shot { background: #a03030; color: #fff; }
         .btn-shot:active { background: #802020; }
-        .btn-add {
-            width: 100%; padding: 10px; margin-top: 8px; background: #fff;
-            border: 1.5px dashed #a03030; border-radius: 4px; color: #a03030;
-            font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+
+        .tip {
+            max-width: 420px;
+            margin: 6px auto 0;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            line-height: 1.5;
         }
-        .btn-add:active { background: #fff0f0; }
-        .tip { max-width: 480px; margin: 8px auto 0; text-align: center; font-size: 12px; color: #888; line-height: 1.5; }
-        @media print { body { background: #fff; padding: 0; } .paper { box-shadow: none; } .actions, .tip, .btn-add { display: none !important; } }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .paper { box-shadow: none; }
+            .actions, .tip, .btn-add { display: none !important; }
+        }
     </style>
 </head>
 <body>
     <div class="paper" id="paper">
         <div class="header">
-            <div class="header-top">
+            <div class="header-row">
                 <div class="brand">远味</div>
                 <div class="title">食品记录卡</div>
                 <div class="order-no-top" id="orderNoTop">NO:000001</div>
             </div>
         </div>
+
         <div class="info-grid">
             <div class="info-item"><label>台号：</label><input type="text" id="tableNo" placeholder="" autocomplete="off"></div>
             <div class="info-item"><label>人数：</label><input type="number" id="peopleCount" placeholder="" min="1" autocomplete="off"></div>
@@ -105,33 +284,102 @@
             <div class="info-item"><label>时间：</label><input type="text" id="orderTime" placeholder="" autocomplete="off"></div>
             <div class="info-item"><label>连单人：</label><input type="text" id="linkPerson" placeholder="" autocomplete="off"></div>
         </div>
+
         <div class="table-wrap">
             <table>
                 <thead>
-                    <tr><th class="time-col">落单时间</th><th class="name-col">名称</th><th class="qty-col">数量</th><th class="person-col">经手人</th></tr>
+                    <tr>
+                        <th class="time-col">
+                            <div class="v-text">
+                                <span>落</span>
+                                <span>单</span>
+                                <span>时</span>
+                                <span>间</span>
+                            </div>
+                        </th>
+                        <th class="name-col">名称</th>
+                        <th class="qty-col">数量</th>
+                        <th class="person-col">经手人</th>
+                    </tr>
                 </thead>
                 <tbody id="dishBody"></tbody>
             </table>
         </div>
+
         <button class="btn-add" onclick="addRow()" id="addBtn">+ 添加菜品行</button>
+
         <div class="footer">
             <div class="customer-note"><label>顾客意见：</label><input type="text" id="customerNote" placeholder="" autocomplete="off"></div>
             <div class="order-no-bottom" id="orderNoBottom">NO:000001</div>
         </div>
     </div>
+
     <div class="actions" id="actions">
         <button class="btn btn-new" onclick="newOrder()">📝 新订单</button>
         <button class="btn btn-shot" onclick="takeShot()">📸 截屏发后厨</button>
     </div>
+
     <div class="tip" id="tip">填完点击"截屏发后厨"→按钮自动隐藏→手机截屏→发后厨微信群</div>
+
     <script>
-        function generateNo() { const now = new Date(); const d = String(now.getDate()).padStart(2, '0'); const r = String(Math.floor(Math.random() * 900) + 100); return 'NO:' + d + r; }
-        function fillDateTime() { const now = new Date(); const dateStr = (now.getMonth() + 1) + '月' + now.getDate() + '日'; const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'); document.getElementById('orderDate').value = dateStr; document.getElementById('orderTime').value = timeStr; }
-        function addRow() { const tbody = document.getElementById('dishBody'); const tr = document.createElement('tr'); const now = new Date(); const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0'); tr.innerHTML = '<td><input type="text" value="' + timeStr + '" autocomplete="off"></td><td class="name-cell"><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>'; tbody.appendChild(tr); }
-        function initTable() { const tbody = document.getElementById('dishBody'); tbody.innerHTML = ''; for (let i = 0; i < 5; i++) addRow(); }
-        function newOrder() { if (!confirm('确定要新建订单吗？当前内容将被清空。')) return; document.querySelectorAll('.paper input').forEach(el => el.value = ''); const no = generateNo(); document.getElementById('orderNoTop').textContent = no; document.getElementById('orderNoBottom').textContent = no; fillDateTime(); initTable(); window.scrollTo(0, 0); }
-        function takeShot() { document.getElementById('actions').style.display = 'none'; document.getElementById('tip').style.display = 'none'; document.getElementById('addBtn').style.display = 'none'; alert('现在请截屏（电源键+音量下键），然后将图片发给后厨。\n\n点击确定恢复按钮。'); document.getElementById('actions').style.display = 'flex'; document.getElementById('tip').style.display = 'block'; document.getElementById('addBtn').style.display = 'block'; }
-        document.addEventListener('DOMContentLoaded', () => { const no = generateNo(); document.getElementById('orderNoTop').textContent = no; document.getElementById('orderNoBottom').textContent = no; fillDateTime(); initTable(); });
+        function generateNo() {
+            const now = new Date();
+            const d = String(now.getDate()).padStart(2, '0');
+            const r = String(Math.floor(Math.random() * 900) + 100);
+            return 'NO:' + d + r;
+        }
+
+        function fillDateTime() {
+            const now = new Date();
+            const dateStr = (now.getMonth() + 1) + '月' + now.getDate() + '日';
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('orderDate').value = dateStr;
+            document.getElementById('orderTime').value = timeStr;
+        }
+
+        function addRow() {
+            const tbody = document.getElementById('dishBody');
+            const tr = document.createElement('tr');
+            const now = new Date();
+            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            tr.innerHTML = '<td><input type="text" value="' + timeStr + '" autocomplete="off"></td><td class="name-cell"><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
+            tbody.appendChild(tr);
+        }
+
+        function initTable() {
+            const tbody = document.getElementById('dishBody');
+            tbody.innerHTML = '';
+            for (let i = 0; i < 5; i++) addRow();
+        }
+
+        function newOrder() {
+            if (!confirm('确定要新建订单吗？当前内容将被清空。')) return;
+            document.querySelectorAll('.paper input').forEach(function(el) { el.value = ''; });
+            const no = generateNo();
+            document.getElementById('orderNoTop').textContent = no;
+            document.getElementById('orderNoBottom').textContent = no;
+            fillDateTime();
+            initTable();
+            window.scrollTo(0, 0);
+        }
+
+        function takeShot() {
+            document.getElementById('actions').style.display = 'none';
+            document.getElementById('tip').style.display = 'none';
+            document.getElementById('addBtn').style.display = 'none';
+            alert('现在请截屏（电源键+音量下键），然后将图片发给后厨。\n\n点击确定恢复按钮。');
+            document.getElementById('actions').style.display = 'flex';
+            document.getElementById('tip').style.display = 'block';
+            document.getElementById('addBtn').style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const no = generateNo();
+            document.getElementById('orderNoTop').textContent = no;
+            document.getElementById('orderNoBottom').textContent = no;
+            fillDateTime();
+            initTable();
+        });
     </script>
 </body>
 </html>

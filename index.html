@@ -1,385 +1,366 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <title>远味 食品记录卡</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>远味食品记录卡</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "SimSun", "宋体", serif;
-            background: #e8e0d0;
-            padding: 10px;
-            font-size: 15px;
-            color: #a03030;
-            -webkit-tap-highlight-color: transparent;
-            min-height: 100vh;
-        }
+body {
+  background: #e8e0d0;
+  padding: 10px;
+  font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 15px;
+  color: #a03030;
+  -webkit-tap-highlight-color: transparent;
+}
 
-        .paper {
-            background: #fff;
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 14px 12px 12px 12px;
-            position: relative;
-        }
+/* 主卡片 */
+.card {
+  background: #fff;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px 12px 12px 12px;
+}
 
-        .header {
-            position: relative;
-            margin-bottom: 10px;
-            padding-bottom: 2px;
-        }
+/* 标题行 */
+.head-row {
+  text-align: center;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  position: relative;
+}
 
-        .header-row {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-        }
+.head-left {
+  float: left;
+  font-size: 26px;
+  font-weight: 700;
+  color: #a03030;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-top: 2px;
+}
 
-        .brand {
-            font-size: 26px;
-            color: #a03030;
-            font-weight: 700;
-            letter-spacing: 2px;
-            flex-shrink: 0;
-        }
+.head-center {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #a03030;
+  letter-spacing: 6px;
+  line-height: 1;
+}
 
-        .title {
-            font-size: 20px;
-            color: #a03030;
-            letter-spacing: 4px;
-            font-weight: 700;
-            text-align: center;
-            flex: 1;
-            padding: 0 8px;
-        }
+.head-right {
+  float: right;
+  font-size: 15px;
+  font-weight: 700;
+  color: #a03030;
+  letter-spacing: 1px;
+  line-height: 1;
+  margin-top: 4px;
+}
 
-        .order-no-top {
-            font-size: 15px;
-            color: #a03030;
-            font-weight: 700;
-            letter-spacing: 1px;
-            flex-shrink: 0;
-        }
+.head-row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 10px;
-            margin-bottom: 10px;
-        }
+/* 信息表格 */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 8px;
+}
 
-        .info-item {
-            display: flex;
-            align-items: baseline;
-            font-size: 14px;
-            color: #a03030;
-        }
+.info-table td {
+  padding: 3px 2px;
+  font-size: 14px;
+  color: #a03030;
+  width: 25%;
+  vertical-align: bottom;
+}
 
-        .info-item label {
-            white-space: nowrap;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
+.info-table td input {
+  border: none;
+  border-bottom: 1px solid #a03030;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  padding: 1px 2px;
+  text-align: center;
+  width: 100%;
+  font-family: inherit;
+}
 
-        .info-item input {
-            flex: 1;
-            border: none;
-            border-bottom: 1px solid #a03030;
-            background: transparent;
-            font-size: 14px;
-            color: #333;
-            padding: 1px 4px;
-            font-family: inherit;
-            min-width: 40px;
-            text-align: center;
-        }
+.info-table td input:focus {
+  outline: none;
+  background: #fff5f5;
+}
 
-        .info-item input:focus {
-            outline: none;
-            border-bottom: 1.5px solid #a03030;
-            background: #fff8f8;
-        }
+/* 菜品表格 */
+.dish-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1.5px solid #a03030;
+}
 
-        .table-wrap {
-            border: 1.5px solid #a03030;
-            margin-bottom: 8px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+.dish-table th {
+  border: 1px solid #a03030;
+  color: #a03030;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px 2px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            table-layout: fixed;
-            min-width: 320px;
-        }
+.dish-table th:first-child {
+  width: 16%;
+  font-size: 13px;
+  line-height: 1.4;
+}
 
-        th {
-            border: 1px solid #a03030;
-            color: #a03030;
-            font-size: 14px;
-            font-weight: 700;
-            padding: 4px 2px;
-            text-align: center;
-            height: 40px;
-            vertical-align: middle;
-        }
+.dish-table th:nth-child(2) { width: 46%; }
+.dish-table th:nth-child(3) { width: 16%; }
+.dish-table th:nth-child(4) { width: 22%; }
 
-        th.time-col {
-            width: 14%;
-            line-height: 1.3;
-            padding: 4px 2px;
-        }
+.dish-table td {
+  border: 1px solid #a03030;
+  padding: 0;
+  height: 36px;
+}
 
-        .v-text span {
-            display: block;
-            font-size: 13px;
-        }
+.dish-table td input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  padding: 2px 4px;
+  text-align: center;
+  font-family: inherit;
+}
 
-        th.name-col { width: 48%; }
-        th.qty-col { width: 14%; }
-        th.person-col { width: 24%; }
+.dish-table td input:focus { outline: none; background: #fff5f5; }
+.dish-table td:nth-child(2) input { text-align: left; padding-left: 6px; }
 
-        td {
-            border: 1px solid #a03030;
-            padding: 0;
-            height: 38px;
-            vertical-align: middle;
-        }
+/* 添加按钮 */
+.add-btn {
+  width: 100%;
+  max-width: 400px;
+  margin: 6px auto 0;
+  padding: 8px;
+  background: #fff;
+  border: 1.5px dashed #a03030;
+  border-radius: 4px;
+  color: #a03030;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
 
-        td input {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            color: #333;
-            font-family: inherit;
-            padding: 3px 4px;
-            text-align: center;
-        }
+.add-btn:active { background: #fff0f0; }
 
-        td input:focus { outline: none; background: #fff8f8; }
-        td.name-cell input { text-align: left; padding-left: 6px; }
+/* 底部行 */
+.foot-row {
+  max-width: 400px;
+  margin: 6px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  color: #a03030;
+  font-weight: 600;
+}
 
-        .btn-add {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 8px;
-            background: #fff;
-            border: 1.5px dashed #a03030;
-            border-radius: 4px;
-            color: #a03030;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            -webkit-appearance: none;
-        }
+.foot-left {
+  display: flex;
+  align-items: baseline;
+  flex: 1;
+}
 
-        .btn-add:active { background: #fff0f0; }
+.foot-left input {
+  border: none;
+  border-bottom: 1px solid #a03030;
+  background: transparent;
+  font-size: 14px;
+  color: #333;
+  padding: 1px 4px;
+  flex: 1;
+  margin-left: 4px;
+  font-family: inherit;
+}
 
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 4px;
-        }
+.foot-left input:focus { outline: none; background: #fff5f5; }
 
-        .customer-note {
-            display: flex;
-            align-items: baseline;
-            font-size: 14px;
-            color: #a03030;
-            font-weight: 600;
-            flex: 1;
-        }
+.foot-right {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  margin-left: 12px;
+}
 
-        .customer-note input {
-            flex: 1;
-            border: none;
-            border-bottom: 1px solid #a03030;
-            background: transparent;
-            font-size: 14px;
-            color: #333;
-            padding: 1px 4px;
-            font-family: inherit;
-            margin-left: 4px;
-            margin-right: 12px;
-            min-width: 60px;
-        }
+/* 操作按钮 */
+.actions {
+  max-width: 400px;
+  margin: 10px auto 0;
+  display: flex;
+  gap: 8px;
+}
 
-        .customer-note input:focus { outline: none; background: #fff8f8; }
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: 1.5px solid #a03030;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  font-family: inherit;
+  -webkit-appearance: none;
+}
 
-        .order-no-bottom {
-            font-size: 15px;
-            color: #a03030;
-            font-weight: 700;
-            letter-spacing: 1px;
-            white-space: nowrap;
-        }
+.btn-new { background: #fff; color: #a03030; }
+.btn-new:active { background: #fff0f0; }
+.btn-shot { background: #a03030; color: #fff; }
+.btn-shot:active { background: #802020; }
 
-        .actions {
-            max-width: 420px;
-            margin: 10px auto 0;
-            display: flex;
-            gap: 8px;
-        }
+.tip {
+  max-width: 400px;
+  margin: 6px auto 0;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+}
 
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: 1.5px solid #a03030;
-            border-radius: 4px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            font-family: inherit;
-            -webkit-appearance: none;
-        }
-
-        .btn-new { background: #fff; color: #a03030; }
-        .btn-new:active { background: #fff0f0; }
-        .btn-shot { background: #a03030; color: #fff; }
-        .btn-shot:active { background: #802020; }
-
-        .tip {
-            max-width: 420px;
-            margin: 6px auto 0;
-            text-align: center;
-            font-size: 12px;
-            color: #888;
-            line-height: 1.5;
-        }
-
-        @media print {
-            body { background: #fff; padding: 0; }
-            .paper { box-shadow: none; }
-            .actions, .tip, .btn-add { display: none !important; }
-        }
-    </style>
+@media print {
+  body { background: #fff; padding: 0; }
+  .actions, .tip, .add-btn { display: none !important; }
+}
+</style>
 </head>
 <body>
-    <div class="paper" id="paper">
-        <div class="header">
-            <div class="header-row">
-                <div class="brand">远味</div>
-                <div class="title">食品记录卡</div>
-                <div class="order-no-top" id="orderNoTop">NO:000001</div>
-            </div>
-        </div>
 
-        <div class="info-grid">
-            <div class="info-item"><label>台号：</label><input type="text" id="tableNo" placeholder="" autocomplete="off"></div>
-            <div class="info-item"><label>人数：</label><input type="number" id="peopleCount" placeholder="" min="1" autocomplete="off"></div>
-            <div class="info-item"><label>日期：</label><input type="text" id="orderDate" placeholder="" autocomplete="off"></div>
-            <div class="info-item"><label>经手人：</label><input type="text" id="handler" placeholder="" autocomplete="off"></div>
-            <div class="info-item"><label>顾客：</label><input type="text" id="customerName" placeholder="" autocomplete="off"></div>
-            <div class="info-item"><label>茶位：</label><input type="number" id="teaSeat" placeholder="" min="1" autocomplete="off"></div>
-            <div class="info-item"><label>时间：</label><input type="text" id="orderTime" placeholder="" autocomplete="off"></div>
-            <div class="info-item"><label>连单人：</label><input type="text" id="linkPerson" placeholder="" autocomplete="off"></div>
-        </div>
+<div class="card" id="card">
+  <!-- 标题 -->
+  <div class="head-row">
+    <div class="head-left">远味</div>
+    <div class="head-right" id="noTop">NO:00001</div>
+    <div class="head-center">食品记录卡</div>
+  </div>
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="time-col">
-                            <div class="v-text">
-                                <span>落</span>
-                                <span>单</span>
-                                <span>时</span>
-                                <span>间</span>
-                            </div>
-                        </th>
-                        <th class="name-col">名称</th>
-                        <th class="qty-col">数量</th>
-                        <th class="person-col">经手人</th>
-                    </tr>
-                </thead>
-                <tbody id="dishBody"></tbody>
-            </table>
-        </div>
+  <!-- 信息 -->
+  <table class="info-table">
+    <tr>
+      <td>台号：<input type="text" id="t1" style="width:60px;" autocomplete="off"></td>
+      <td>人数：<input type="number" id="t2" style="width:50px;" min="1" autocomplete="off"></td>
+      <td>日期：<input type="text" id="t3" style="width:80px;" autocomplete="off"></td>
+      <td>经手人：<input type="text" id="t4" style="width:60px;" autocomplete="off"></td>
+    </tr>
+    <tr>
+      <td>顾客：<input type="text" id="t5" style="width:60px;" autocomplete="off"></td>
+      <td>茶位：<input type="number" id="t6" style="width:50px;" min="1" autocomplete="off"></td>
+      <td>时间：<input type="text" id="t7" style="width:80px;" autocomplete="off"></td>
+      <td>连单人：<input type="text" id="t8" style="width:60px;" autocomplete="off"></td>
+    </tr>
+  </table>
 
-        <button class="btn-add" onclick="addRow()" id="addBtn">+ 添加菜品行</button>
+  <!-- 菜品表格 -->
+  <table class="dish-table" id="dishTable">
+    <thead>
+      <tr>
+        <th>落单<br>时间</th>
+        <th>名称</th>
+        <th>数量</th>
+        <th>经手人</th>
+      </tr>
+    </thead>
+    <tbody id="dishBody"></tbody>
+  </table>
+</div>
 
-        <div class="footer">
-            <div class="customer-note"><label>顾客意见：</label><input type="text" id="customerNote" placeholder="" autocomplete="off"></div>
-            <div class="order-no-bottom" id="orderNoBottom">NO:000001</div>
-        </div>
-    </div>
+<button class="add-btn" onclick="addRow()" id="addBtn">+ 添加菜品行</button>
 
-    <div class="actions" id="actions">
-        <button class="btn btn-new" onclick="newOrder()">📝 新订单</button>
-        <button class="btn btn-shot" onclick="takeShot()">📸 截屏发后厨</button>
-    </div>
+<!-- 底部 -->
+<div class="foot-row" id="footRow">
+  <div class="foot-left">顾客意见：<input type="text" id="note" style="width:100%;" autocomplete="off"></div>
+  <div class="foot-right" id="noBottom">NO:00001</div>
+</div>
 
-    <div class="tip" id="tip">填完点击"截屏发后厨"→按钮自动隐藏→手机截屏→发后厨微信群</div>
+<!-- 按钮 -->
+<div class="actions" id="actions">
+  <button class="btn btn-new" onclick="newOrder()">📝 新订单</button>
+  <button class="btn btn-shot" onclick="takeShot()">📸 截屏发后厨</button>
+</div>
 
-    <script>
-        function generateNo() {
-            const now = new Date();
-            const d = String(now.getDate()).padStart(2, '0');
-            const r = String(Math.floor(Math.random() * 900) + 100);
-            return 'NO:' + d + r;
-        }
+<div class="tip" id="tip">填完点击"截屏发后厨"→按钮自动隐藏→手机截屏→发后厨微信群</div>
 
-        function fillDateTime() {
-            const now = new Date();
-            const dateStr = (now.getMonth() + 1) + '月' + now.getDate() + '日';
-            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('orderDate').value = dateStr;
-            document.getElementById('orderTime').value = timeStr;
-        }
+<script>
+function genNo() {
+  var now = new Date();
+  var d = String(now.getDate()).padStart(2, '0');
+  var r = String(Math.floor(Math.random() * 900) + 100);
+  return 'NO:' + d + r;
+}
 
-        function addRow() {
-            const tbody = document.getElementById('dishBody');
-            const tr = document.createElement('tr');
-            const now = new Date();
-            const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-            tr.innerHTML = '<td><input type="text" value="' + timeStr + '" autocomplete="off"></td><td class="name-cell"><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
-            tbody.appendChild(tr);
-        }
+function fillTime() {
+  var now = new Date();
+  var ds = (now.getMonth() + 1) + '月' + now.getDate() + '日';
+  var ts = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('t3').value = ds;
+  document.getElementById('t7').value = ts;
+}
 
-        function initTable() {
-            const tbody = document.getElementById('dishBody');
-            tbody.innerHTML = '';
-            for (let i = 0; i < 5; i++) addRow();
-        }
+function addRow() {
+  var tbody = document.getElementById('dishBody');
+  var tr = document.createElement('tr');
+  var now = new Date();
+  var ts = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+  tr.innerHTML = '<td><input type="text" value="' + ts + '" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td><td><input type="number" placeholder="" min="1" autocomplete="off"></td><td><input type="text" placeholder="" autocomplete="off"></td>';
+  tbody.appendChild(tr);
+}
 
-        function newOrder() {
-            if (!confirm('确定要新建订单吗？当前内容将被清空。')) return;
-            document.querySelectorAll('.paper input').forEach(function(el) { el.value = ''; });
-            const no = generateNo();
-            document.getElementById('orderNoTop').textContent = no;
-            document.getElementById('orderNoBottom').textContent = no;
-            fillDateTime();
-            initTable();
-            window.scrollTo(0, 0);
-        }
+function init() {
+  document.getElementById('dishBody').innerHTML = '';
+  for (var i = 0; i < 5; i++) addRow();
+}
 
-        function takeShot() {
-            document.getElementById('actions').style.display = 'none';
-            document.getElementById('tip').style.display = 'none';
-            document.getElementById('addBtn').style.display = 'none';
-            alert('现在请截屏（电源键+音量下键），然后将图片发给后厨。\n\n点击确定恢复按钮。');
-            document.getElementById('actions').style.display = 'flex';
-            document.getElementById('tip').style.display = 'block';
-            document.getElementById('addBtn').style.display = 'block';
-        }
+function newOrder() {
+  if (!confirm('确定要新建订单吗？')) return;
+  var inputs = document.querySelectorAll('#card input, .foot-left input');
+  for (var i = 0; i < inputs.length; i++) inputs[i].value = '';
+  var no = genNo();
+  document.getElementById('noTop').textContent = no;
+  document.getElementById('noBottom').textContent = no;
+  fillTime();
+  init();
+  window.scrollTo(0, 0);
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const no = generateNo();
-            document.getElementById('orderNoTop').textContent = no;
-            document.getElementById('orderNoBottom').textContent = no;
-            fillDateTime();
-            initTable();
-        });
-    </script>
+function takeShot() {
+  document.getElementById('actions').style.display = 'none';
+  document.getElementById('tip').style.display = 'none';
+  document.getElementById('addBtn').style.display = 'none';
+  alert('现在请截屏（电源键+音量下键），然后发给后厨。\n\n点击确定恢复按钮。');
+  document.getElementById('actions').style.display = 'flex';
+  document.getElementById('tip').style.display = 'block';
+  document.getElementById('addBtn').style.display = 'block';
+}
+
+var no = genNo();
+document.getElementById('noTop').textContent = no;
+document.getElementById('noBottom').textContent = no;
+fillTime();
+init();
+</script>
+
 </body>
 </html>
